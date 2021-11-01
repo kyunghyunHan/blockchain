@@ -1,21 +1,19 @@
 package main
 
 import (
-	"crypto/sha256"
 	"fmt"
+
+	blockchain "github.com/kyunghyun/blockchain/block"
 )
 
-type block struct {
-	data     string
-	hash     string
-	prevHash string
-}
-
 func main() {
-	genesisBlock := block{"Genesis Block", "", ""}
-	hash := sha256.Sum256([]byte(genesisBlock.data + genesisBlock.prevHash))
-	hexHash := fmt.Sprintf("%x", hash)
-	genesisBlock.hash = hexHash
-	fmt.Println(genesisBlock)
-
+	chain := blockchain.GetBlockchain()
+	chain.AddBlock("Second Block")
+	chain.AddBlock("Third  Block")
+	chain.AddBlock("Fourth Block")
+	for _, block := range chain.AllBlocks() {
+		fmt.Printf("Data:%s\n", block.Data)
+		fmt.Printf("Hash:%s\n", block.Hash)
+		fmt.Printf("Prev Hash:%s\n", block.PrevHash)
+	}
 }
