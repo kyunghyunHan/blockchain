@@ -1,10 +1,16 @@
 package main
 
-import (
-	"github.com/kyunghyun/blockchain/rest"
-)
+import "github.com/kyunghyun/blockchain/cli"
 
 func main() {
 
-	rest.Start(4000)
+	cli.Start()
+	// switch os.Args[1] {
+	// case "explorer":
+	// 	fmt.Println("Start Explorer")
+	// case "rest":
+	// 	fmt.Println("Start REST API")
+	// default:
+	// 	usage()
+	// }
 }
