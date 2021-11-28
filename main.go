@@ -1,16 +1,8 @@
 package main
 
-import "github.com/kyunghyun/blockchain/cli"
+import blockchain "github.com/kyunghyun/blockchain/block"
 
 func main() {
 
-	cli.Start()
-	// switch os.Args[1] {
-	// case "explorer":
-	// 	fmt.Println("Start Explorer")
-	// case "rest":
-	// 	fmt.Println("Start REST API")
-	// default:
-	// 	usage()
-	// }
+	blockchain.Blockchain()
 }
