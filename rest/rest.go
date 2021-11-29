@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	blockchain "github.com/kyunghyun/blockchain/block"
+	"github.com/kyunghyun/blockchain/utils"
 )
 
 var port string
@@ -65,14 +66,12 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 
-		return
-		// json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
+		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
 	case "POST":
-		return
-		/* var addBlockBody addBlockBody
+		var addBlockBody addBlockBody
 		utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
-		blockchain.GetBlockchain().AddBlock(addBlockBody.Message)
-		rw.WriteHeader(http.StatusCreated)*/
+		blockchain.Blockchain().AddBlock(addBlockBody.Message)
+		rw.WriteHeader(http.StatusCreated)
 	}
 }
 func block(rw http.ResponseWriter, r *http.Request) {
