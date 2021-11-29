@@ -1,11 +1,20 @@
 http://localhost:4000/
 ###
+http://localhost:4000/status
+###
+
 http://localhost:4000/blocks
 ###
 POST http://localhost:4000/blocks
 
+###
+POST http://localhost:4000/transactions
+
 {
-    "message": "Data for my block"
+    "to":"lynn",
+        "amount":50
 }
 ###
-http://localhost:4000/blocks/4 
+http://localhost:4000/mempool
+###
+http://localhost:4000/balance/nico 

@@ -1,19 +1,23 @@
 package blockchain
 
 import (
-	"crypto/sha256"
 	"errors"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/kyunghyun/blockchain/db"
 	"github.com/kyunghyun/blockchain/utils"
 )
 
 type Block struct {
-	Data     string `json:"data"`
-	Hash     string `json:"hash"`
-	PrevHash string `json:"prevHash,omitempty"`
-	Height   int    `json:"height"`
+	Hash         string `json:"hash"`
+	PrevHash     string `json:"prevHash,omitempty"`
+	Height       int    `json:"height"`
+	Difficulty   int    `json:"difficulty"`
+	Nonce        int    `json:"nonce"`
+	Timestamp    int    `json:"timestamp"`
+	Transactions []*Tx  `json:"transactions"`
 }
 
 func (b *Block) persist() {
@@ -25,7 +29,6 @@ var ErrNotFound = errors.New("block not found")
 func (b *Block) restore(data []byte) {
 	utils.FromBytes(b, data)
 }
-
 func FindBlock(hash string) (*Block, error) {
 	blockBytes := db.Block(hash)
 	if blockBytes == nil {
@@ -35,16 +38,31 @@ func FindBlock(hash string) (*Block, error) {
 	block.restore(blockBytes)
 	return block, nil
 }
-
-func createBlock(data string, prevHash string, height int) *Block {
+func (b *Block) mine() {
+	target := strings.Repeat("0", b.Difficulty)
+	for {
+		b.Timestamp = int(time.Now().Unix())
+		hash := utils.Hash(b)
+		fmt.Printf("\n\n\nTarget:%s\nHash:%s\nNonce:%d\n\n\n", target, hash, b.Nonce)
+		if strings.HasPrefix(hash, target) {
+			b.Hash = hash
+			break
+		} else {
+			b.Nonce++
+		}
+	}
+}
+func createBlock(prevHash string, height, diff int) *Block {
 	block := &Block{
-		Data:     data,
 		Hash:     "",
 		PrevHash: prevHash,
 		Height:   height,
+
+		Difficulty: diff,
+		Nonce:      0,
 	}
-	payload := block.Data + block.PrevHash + fmt.Sprint(block.Height)
-	block.Hash = fmt.Sprintf("%x", sha256.Sum256([]byte(payload)))
+	block.mine()
+	block.Transactions = Mempool.TxToConfirm()
 	block.persist()
 	return block
 }
