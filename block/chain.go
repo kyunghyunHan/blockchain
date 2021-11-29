@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/kyunghyun/blockchain/db"
@@ -14,6 +15,10 @@ type blockchain struct {
 
 var b *blockchain
 var once sync.Once
+
+func (b *blockchain) restore(data []byte) {
+	utils.FromBytes(b, data)
+}
 
 func (b *blockchain) persist() {
 	db.SaveBlockchain(utils.ToBytes(b))
@@ -30,8 +35,14 @@ func Blockchain() *blockchain {
 	if b == nil {
 		once.Do(func() {
 			b = &blockchain{"", 0}
-			b.AddBlock("Genesis")
+			checkpoint := db.Checkpoint()
+			if checkpoint == nil {
+				b.AddBlock("Genesis")
+			} else {
+				b.restore(checkpoint)
+			}
 		})
 	}
+	fmt.Println(b.NewestHash)
 	return b
 }

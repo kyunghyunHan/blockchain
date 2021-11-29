@@ -1,10 +1,12 @@
 package main
 
-import blockchain "github.com/kyunghyun/blockchain/block"
+import (
+	blockchain "github.com/kyunghyun/blockchain/block"
+	"github.com/kyunghyun/blockchain/cli"
+)
 
 func main() {
 
-	blockchain.Blockchain().AddBlock("First")
-	blockchain.Blockchain().AddBlock("Second")
-	blockchain.Blockchain().AddBlock("Third")
+	blockchain.Blockchain()
+	cli.Start()
 }
