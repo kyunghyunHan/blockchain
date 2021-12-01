@@ -150,3 +150,4 @@ func Blockchain() *blockchain {
 	})
 	return b
 }
+func rr(){}
