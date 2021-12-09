@@ -72,3 +72,43 @@ func GetBlockchain() *blockchain {
 - getBlockchatin이라는 function이라는 생성
 - b변수와동일한 타입인 blockchain 포인터를 반환. 블록체인의 instance를 생성후 리턴 b를 반환 = 블록체인이 어떻게 최기화 되고 공유될지를 제어
 
+## 블록체인 
+
+- Once.Do = 한번만 호출 시켜주는 func
+
+```
+var once sync.Once
+
+func (b *block) calculateHash() {
+	hash := sha256.Sum256([]byte(b.data + b.prevHash))
+	b.hash = fmt.Sprintf("%x", hash)
+}
+
+func getLastHash() string {
+	totalBlocks := len(GetBlockchain().blocks)
+	if totalBlocks == 0 {
+		return ""
+	}
+	return GetBlockchain().blocks[totalBlocks-1].hash
+}
+
+func createBlock(data string) *block {
+	newBlock := block{data, "", getLastHash()}
+	newBlock.calculateHash()
+	return &newBlock
+}
+```
+
+- 블록체인 초기화
+
+- 새로운 불록생성
+
+- 블록체인의 총 길이가  0 이면 마지막 해쉬 값은 반환하지 않는다
+
+- 0이 아니면 블록체인의 배열-1의 해쉬값을 반환
+```
+once.Do(func() {
+			b = &blockchain{}
+			b.blocks = append(b.blocks, createBlock("Genesis Block"))
+		})
+```
