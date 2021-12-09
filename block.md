@@ -57,3 +57,18 @@ func (b *blockchain) addBlock(data string) {
 ```
 - 해시값으로 바꾼 후 블록 배열에서 추가
 
+
+## Singleton Patton
+
+```
+func GetBlockchain() *blockchain {
+	if b == nil {
+		b = &blockchain{}
+	}
+	return b
+}
+```
+- Singleton 패턴이란 우리의 application내에서 어디든지 블록체인의 단 하나의 instance만을 공유하는 방법
+- getBlockchatin이라는 function이라는 생성
+- b변수와동일한 타입인 blockchain 포인터를 반환. 블록체인의 instance를 생성후 리턴 b를 반환 = 블록체인이 어떻게 최기화 되고 공유될지를 제어
+
