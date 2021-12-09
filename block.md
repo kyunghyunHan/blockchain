@@ -112,3 +112,17 @@ once.Do(func() {
 			b.blocks = append(b.blocks, createBlock("Genesis Block"))
 		})
 ```
+```
+func (b *blockchain) AddBlock(data string) {
+	b.blocks = append(b.blocks, createBlock(data))
+}
+
+```
+```
+b.AddBlock("Genesis")
+```
+```
+func (b *blockchain) AllBlocks() []*block {
+	return b.blocks
+}
+```
