@@ -57,6 +57,16 @@ func (b *blockchain) addBlock(data string) {
 ```
 - 해시값으로 바꾼 후 블록 배열에서 추가
 
+## bloclk list 출력
+```
+func (b*blockchain) listBlocks(){
+for _,block := range b.blocks{
+     fmt.printf("Data:$s\n",block.data)
+     fmt.printf("Hash:$s\n",block.hash)
+     fmt.printf("Prev Hash:$s\n",block.prevHash)
+     }
+}
+```
 
 ## Singleton Patton
 
@@ -75,7 +85,12 @@ func GetBlockchain() *blockchain {
 ## 블록체인 
 
 - Once.Do = 한번만 호출 시켜주는 func
+```
+func (b *blockchain) AddBlock(data string) {
+	b.blocks = append(b.blocks, createBlock(data))
+}
 
+```
 ```
 var once sync.Once
 
@@ -106,23 +121,22 @@ func createBlock(data string) *block {
 - 블록체인의 총 길이가  0 이면 마지막 해쉬 값은 반환하지 않는다
 
 - 0이 아니면 블록체인의 배열-1의 해쉬값을 반환
+- 
 ```
-once.Do(func() {
+func GetBlockchain() *blockchain {
+	if b == nil {
+		once.Do(func() {
 			b = &blockchain{}
-			b.blocks = append(b.blocks, createBlock("Genesis Block"))
+			b.AddBlock("Genesis")
 		})
-```
-```
-func (b *blockchain) AddBlock(data string) {
-	b.blocks = append(b.blocks, createBlock(data))
+	}
+	return b
 }
-
-```
-```
-b.AddBlock("Genesis")
 ```
 ```
 func (b *blockchain) AllBlocks() []*block {
 	return b.blocks
 }
 ```
+- block pointer들의 slcie를 반환
+- blockchain의 blocks를 반환하는 것과 동일
