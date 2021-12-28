@@ -4,17 +4,18 @@
 ```
 const port string = ":4000
 
-func home(rw http.ResponseWriter, r *http.Request){
+func home(rw http.ResponseWriter, r *http.Request){ 
   fmt.Fprint(rw,"hello from hone!")
   }
  func main(){
-http.HandleFunc("/",home)
-fmt.println("Listening on http://localhost%s\n",port)
-http.ListenAndServer(port,nil)
+http.HandleFunc("/",home) 
+fmt.println("Listening on http://localhost%s\n",port)  //프린트
+http.ListenAndServer(port,nil)    //서버여는 용도
 }
 ```
 - template폴더 생성
-- 
+- Fatal은 os.Exit(1)다음에 따라나오는 error를 Print()하는것과 동일
+- Must:Template이나 error를 반환하는 함수의 호출을 감싸서 error가 있다면 error를 출력
 
 
 
@@ -30,6 +31,10 @@ tmpl := template.Must(template.ParseFiles("templates/home.html"))
 	tmpl.Execute(rw, data)
   }
 ```
+- home 은 2개의 인자를 받는 함수 
+- ResponseWrite : 유저에게 보내고 싶은 데이터
+- Request의 pointer -> request가 file이 될수도 있고 빅데이터 가될수도 있음 그래서 복사하기보다는 실제 request를 사용하는게 알맞음
+- homedata 구조체에 정의 후 data변수에 데이타 저장후 출력
 ```
 ...gohtml
  <h1>{{.PageTitle}}</h1>
