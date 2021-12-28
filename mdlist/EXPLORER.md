@@ -38,5 +38,41 @@ tmpl := template.Must(template.ParseFiles("templates/home.html"))
 ```
 ...gohtml
  <h1>{{.PageTitle}}</h1>
+ {{range .Blocks}}
+ <div>
+   <ul>
+     <li>{{.Data}}</li>
+     <li>{{.Hash}}</li>
+     <li>{{.PrevHash}}</li>
+ {{end}}
+ 
 ```
+
 - go에서 받아온 데이터 출력(대문자 사용)
+- range .구조체
+- {{define""}}{{end}} ->재사용 저장
+- {{template""}} ->불러오기
+
+```
+const templateDir string = "templates/"
+templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))	  
+```
+- pages 폴더안에서 .gohtml로 끝나는 모든 파일을 가져오기
+
+```
+func add(rw http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		templates.ExecuteTemplate(rw, "add", nil)
+	case "POST":
+		r.ParseForm()
+		data := r.Form.Get("blockData")
+		blockchain.GetBlockchain().AddBlock(data)
+		http.Redirect(rw, r, "/", http.StatusPermanentRedirect)
+	}
+}
+
+```
+- templates.ExecuteTemplate(rw, "add", nil) = add페이지 렌더링
+- Get = 
+- Post = 
