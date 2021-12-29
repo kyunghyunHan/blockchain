@@ -37,3 +37,18 @@ type URLDescription struct {
 - 기본적으로 struct가 json으로 변환하는 방식을 바꾸는 방법
 - 소문자로 쓰면 export되지 않기 때문에 소문자를 쓸수없음 이럴떄 사용
 - omitempty :Field가 비어있으면 Field를 숨겨줌
+
+
+
+```
+type URL string
+
+func (u URL) MarshalText() ([]byte, error) {
+	url := fmt.Sprintf("http://localhost%s%s", port, u)
+	return []byte(url), nil
+}
+
+```
+- MarshalText :byte slice와 error를 return
+- URL이 어떻게 json으로 marshal될지를 정할수 있음
+
