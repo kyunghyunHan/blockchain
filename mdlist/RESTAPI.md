@@ -62,15 +62,24 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
 	case "POST":
 		var addBlockBody AddBlockBody
-		utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
-		blockchain.GetBlockchain().AddBlock(addBlockBody.Message)
+		utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlockBody)) //받아온 json을golang으로 변환
+		blockchain.GetBlockchain().AddBlock(addBlockBody.Message) //블록체인에 블록추가
 		rw.WriteHeader(http.StatusCreated)
 	}
 }
 
 ```
+```
+http://localhost:4000/
+POST http://localhost:4000/blocks
+{
+   "message":"Data for my Block
+}
+```
 - post는 블록을 생성할떄 사용
 - get은 블록체인을 확인할 떄 사용,블록체인의 모든 블록을 확인 가능
 - Encode가 Marshal의 일을 해주고 결과를 ResponseWrite에 작성해줌
 - Post에서 받아와서 golang의 struct로 변환
-- REST Client :백엔드에 REST quest를 보내도록
+- REST Client :백엔드에 REST quest를 보내도록 해줌(확장자는 http로해줌)(버튼을 누르면 request를 보내주고,포맷된 json을 보여줌)
+- http client로 post request를 보내느법:작성후 클리하면 URL에 data를 request body로 하는 POST요청을 보냄
+-  
