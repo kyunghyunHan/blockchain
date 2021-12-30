@@ -55,11 +55,22 @@ func (u URL) MarshalText() ([]byte, error) {
 ## blocks/get,blocks/post
 
 ```
-func blocks(rw http.ResponseWriter, r *http.Request){
-   switch r.Method{
-   case "GET":
-       json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
+func blocks(rw http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		rw.Header().Add("Content-Type", "application/json")
+		json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
+	case "POST":
+		var addBlockBody AddBlockBody
+		utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
+		blockchain.GetBlockchain().AddBlock(addBlockBody.Message)
+		rw.WriteHeader(http.StatusCreated)
+	}
+}
+
 ```
 - post는 블록을 생성할떄 사용
-- get은 블록체인을 확인할 떄 사용
-- 
+- get은 블록체인을 확인할 떄 사용,블록체인의 모든 블록을 확인 가능
+- Encode가 Marshal의 일을 해주고 결과를 ResponseWrite에 작성해줌
+- Post에서 받아와서 golang의 struct로 변환
+- REST Client :백엔드에 REST quest를 보내도록
