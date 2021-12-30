@@ -52,3 +52,14 @@ func (u URL) MarshalText() ([]byte, error) {
 - MarshalText :byte slice와 error를 return
 - URL이 어떻게 json으로 marshal될지를 정할수 있음
 
+## blocks/get,blocks/post
+
+```
+func blocks(rw http.ResponseWriter, r *http.Request){
+   switch r.Method{
+   case "GET":
+       json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
+```
+- post는 블록을 생성할떄 사용
+- get은 블록체인을 확인할 떄 사용
+- 
