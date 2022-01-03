@@ -82,4 +82,7 @@ POST http://localhost:4000/blocks
 - Post에서 받아와서 golang의 struct로 변환
 - REST Client :백엔드에 REST quest를 보내도록 해줌(확장자는 http로해줌)(버튼을 누르면 request를 보내주고,포맷된 json을 보여줌)
 - http client로 post request를 보내느법:작성후 클리하면 URL에 data를 request body로 하는 POST요청을 보냄
--  
+
+## nil
+
+
